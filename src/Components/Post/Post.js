@@ -1,10 +1,15 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class Post extends Component {
-    state = {  }
-    render() { 
-        return ( <div>Post</div> );
-    }
-}
+const Post = (props) => 
+    (
+        <div>
+            <img className='avatar-image' src={props.avatarUrl}/>
+            <div className='post-wrapper'>
+                <h1>{props.post.title}</h1>
+                <p>{props.post.content}</p>
+            </div> 
+        </div>
+    )
  
 export default Post;
+

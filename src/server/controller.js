@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-
+require('express');
 
 module.exports = {
     register: (req, res, next)=>{
@@ -19,11 +19,10 @@ module.exports = {
                     res.status(200).send(req.session.user);
                 })
             }
-        }).catch(err=>res.status(500).send('Error checking email'))
-        this.login()
+        }).catch(err=>res.status(500).send(err))
     },
 
-    login: (req, res) => {
+    login: (req, res, next) => {
         const db = req.app.get('db');
         db.check_user_exists([email]).then(data => {
             if(!data[0]){
@@ -40,5 +39,21 @@ module.exports = {
                 }
             }
         })
+    },
+
+    getPosts: (req, res, next) => {
+        const db = req.app.get('db');
+        let posts = db.get_posts();
+        let findSearch = (postArray, searchTerm) => postArray.filter(el => el.content.includes(searchTerm))
+        let filterUserPosts = (postArray, userId) => postArray.filter(post => post.authorId != userId) // remove every post from array where authorId matches userId of logged in user
+        if(req.params.showUserPosts){ //if 'show user posts' is unchecked, filterUserPosts 
+            response = filterUserPosts(response, req.userId)
+            
+        }
+        if(req.body.searchString){ // if 'show user posts' is unchecked and the search string exists
+            // find matches for the search string and filter out user posts
+            re
+            
+        }
     }
 }

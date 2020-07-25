@@ -1,30 +1,32 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom'
+import {Link} from 'react-router-dom';
+import {connect} from 'react-redux'
+import axios from 'axios'
 
 class Auth extends Component {
     constructor(props){
         super(props);
         this.state = {
-            userName: '',
+            email: '',
             password: ''
         }
     }
-    userHandler = e => this.setState({userName: e.target.value})
+    userHandler = e => this.setState({email: e.target.value})
 
     passwordHandler = e => this.setState({password: e.target.value})
 
     loginHandler = () => {
-        axios.post('/auth/login', {...this.state})
+        const data = axios.post('/auth/login', {email: this.props.email, password: this.props.password}); console.log(data)
     }
 
     registerHandler = () => {
-        axios.post('auth/register', {...this.state})
+        const data = axios.post('auth/register', {email: this.props.email, password: this.props.password}); console.log(data)
     }
 
     render() { 
         return ( 
             <div>
-                <input placeholder='userName' onChange={this.userHandler}/>
+                <input placeholder='email' onChange={this.userHandler}/>
                 <input type='password' placeholder='password' onChange={this.passwordHandler}/>
                 <Link to='/dashboard'><button className='login' onClick={this.loginHandler}>Log In</button></Link>
                 <Link to='/dashboard'><button className='register' onClick={this.registerHandler}>Register</button></Link>
@@ -33,4 +35,4 @@ class Auth extends Component {
     }
 }
  
-export default Auth; 
+export default connect(null)(Auth); 
